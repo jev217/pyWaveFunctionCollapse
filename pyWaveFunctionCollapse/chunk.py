@@ -23,7 +23,7 @@ class WFCError(Exception):
     pass
 
 class Chunk(object):
-    def __init__(self, image, tileSize:tuple=(16, 16), chunkSize:tuple=(16,16), chunkNeighbors=None):
+    def __init__(self, image, tileSize:tuple=(16, 16), chunkSize:tuple=(16,16), chunkNeighbors=None, outputImageName=None):
         if type(image) == str:
             self.pattern = Pattern(image, tileSize)
         else:
@@ -32,6 +32,7 @@ class Chunk(object):
         self.chunkOutputSizeX, self.chunkOutputSizeY = chunkSize
         self.chunkSizeX, self.chunkSizeY = self.addCoords(chunkSize, (1, 1))
         self.tileSizeX, self.tileSizeY = tileSize
+        self.outputName = outputImageName
         self.chunkEdges = {}
         self.chunk = {}
         for y in range(self.chunkSizeY):
@@ -209,6 +210,13 @@ class Chunk(object):
         for coord in self.chunk.keys():
             chunkImage.paste(Image.frombytes("RGBA", (self.tileSizeX, self.tileSizeY), self.chunk[coord]), (coord[0]*self.tileSizeX, coord[1]*self.tileSizeY))
         return chunkImage
+
+    def save_chunk_image(self):
+        chunkImage = Image.new("RGBA", (self.chunkOutputSizeX * self.tileSizeX, self.chunkOutputSizeY * self.tileSizeY))
+        for coord in self.chunk.keys():
+            chunkImage.paste(Image.frombytes("RGBA", (self.tileSizeX, self.tileSizeY), self.chunk[coord]),
+                             (coord[0] * self.tileSizeX, coord[1] * self.tileSizeY))
+        chunkImage.save(self.outputName)
 
     def showChunk(self):
         chunkImage = Image.new("RGBA", (self.chunkOutputSizeX*self.tileSizeX, self.chunkOutputSizeY*self.tileSizeY))
