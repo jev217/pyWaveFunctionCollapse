@@ -8,7 +8,7 @@ This can generate in a few methods, if you'd like to generate a larger image bas
 ```python
 from pyWaveFunctionCollapse.Map import Map
 
-game_map = Map("path/to/image.png", outputImageName="path/to/output.png", tileSize=(16, 16), chunkSize=(16, 16), mapSize=(256, 256))
+game_map = Map("path/to/image.png", outputImageName="path/to/output.png", tileSize=(16, 16), chunkSize=(16, 16), mapSize=(16, 16))
 game_map.generate_map()
 game_map.saveMap()
 ```
